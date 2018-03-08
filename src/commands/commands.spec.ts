@@ -110,6 +110,26 @@ describe('Commands', () => {
         expect(ex.message.includes(knownErrorMsg)).toBeTruthy();
       }
     });
+
+    it('should throw an error when command has a space in it', () => {
+      const knownErrorMsg = 'Usage: A command must consist of only letters, no spaces';
+      try {
+        validateCommandFormat(`INDEX|emacs elisp\n`);
+        fail();
+      } catch (ex) {
+        expect(ex.message.includes(knownErrorMsg)).toBeTruthy();
+      }
+    });
+
+    it('should throw an error on strange formatting', () => {
+      const knownErrorMsg = 'Usage: A command must consist of only letters, no spaces';
+      try {
+        validateCommandFormat(`INDEX|emacs=elisp\n`);
+        fail();
+      } catch (ex) {
+        expect(ex.message.includes(knownErrorMsg)).toBeTruthy();
+      }
+    });
   });
 });
 

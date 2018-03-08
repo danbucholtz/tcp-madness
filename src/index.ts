@@ -9,16 +9,24 @@ server.on('close', (event: any) => {
 });
 
 server.on('connection', (socket: net.Socket) => {
-    console.log('Connection achieved!');
 
     socket.on('data', (data: Buffer) => {
         const stringRepresentation = data.toString();
         processConnection(stringRepresentation).then((toRespond) => {
+            // console.log(`Sending Back ${toRespond} in response to ${stringRepresentation}`)
             socket.write(toRespond);
         }).catch((ex: any) => {
-          console.log('Unknown ERROR: ', ex);
+          //console.log('Unknown ERROR: ', ex);
         });
     });
+
+    socket.on('error', (err: Error) => {
+        console.log('Socket error: ', err);
+    });
+});
+
+server.on('error', (err: Error) => {
+    console.log('Server error: ', err);
 });
 
 server.listen(8080, '0.0.0.0', 0, () => {

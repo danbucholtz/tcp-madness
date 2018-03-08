@@ -2,6 +2,14 @@
 
 const commandDependenciesMap = new Map<string, string[]>();
 
+export function getAllKeys() {
+  const keys: string[] = [];
+  commandDependenciesMap.forEach((deps, key) => {
+    keys.push(key);
+  });
+  return keys;
+}
+
 export function isIndexed(packageName: string): Promise<boolean> {
   return new Promise((resolve) => {
     resolve(commandDependenciesMap.has(packageName));

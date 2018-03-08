@@ -8,6 +8,8 @@ import {
   UNKNOWN_NUMBER
 } from '../utils/constants';
 
+import { containsOnlyLetters } from '../utils/helpers';
+
 export function validateCommandFormat(rawCommand: string) {
 
   const lastChar = rawCommand.length ? rawCommand.charAt(rawCommand.length - 1) : null;
@@ -29,6 +31,10 @@ export function validateCommandFormat(rawCommand: string) {
     && commandType !== QUERY) {
 
     throw new Error(`Usage: First argument must be ${INDEX}, ${REMOVE} or ${QUERY}`);
+  }
+
+  if (!containsOnlyLetters(commandChunks[1])) {
+    throw new Error('Usage: A command must consist of only letters, no spaces');
   }
 
   const commandObj: Command = {
