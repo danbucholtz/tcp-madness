@@ -1,3 +1,12 @@
+import {
+  INDEX,
+  INDEX_NUMBER,
+  QUERY,
+  QUERY_NUMBER,
+  REMOVE,
+  REMOVE_NUMBER,
+  UNKNOWN_NUMBER
+} from '../utils/constants';
 
 export function validateCommandFormat(rawCommand: string) {
 
@@ -24,7 +33,8 @@ export function validateCommandFormat(rawCommand: string) {
 
   const commandObj: Command = {
     type: getTypeNumber(commandChunks[0]),
-    packageName: commandChunks[1]
+    packageName: commandChunks[1],
+    dependencies: []
   };
 
   if (commandChunks.length > 2) {
@@ -56,13 +66,5 @@ function getTypeNumber(type: string) {
 export interface Command {
   type: number;
   packageName: string;
-  dependencies?: string[];
+  dependencies: string[];
 }
-
-export const INDEX: string = 'INDEX';
-export const INDEX_NUMBER = 0;
-export const REMOVE: string = 'REMOVE';
-export const REMOVE_NUMBER = 1;
-export const QUERY: string = 'QUERY';
-export const QUERY_NUMBER = 2;
-export const UNKNOWN_NUMBER = -1;

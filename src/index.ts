@@ -1,5 +1,7 @@
 import * as net from 'net';
 
+import { processConnection } from './process-socket-connection';
+
 const server = net.createServer();
 
 server.on('close', (event: any) => {
@@ -11,10 +13,15 @@ server.on('connection', (socket: net.Socket) => {
 
     socket.on('data', (data: Buffer) => {
         const stringRepresentation = data.toString();
-        console.log('stringRepresentation: ', stringRepresentation);
+        processConnection(stringRepresentation).then((toRespond) => {
+            socket.write(toRespond);
+        }).catch((ex: any) => {
+          console.log('Unknown ERROR: ', ex);
+        });
     });
 });
 
 server.listen(8080, '0.0.0.0', 0, () => {
     console.log('Listening for connections');
 });
+

@@ -1,8 +1,11 @@
 import {
-  INDEX,
-  INDEX_NUMBER,
   validateCommandFormat,
 } from './commands';
+
+import {
+  INDEX,
+  INDEX_NUMBER,
+} from '../utils/constants';
 
 describe('Commands', () => {
   describe('validateCommandFormat', () => {
@@ -68,7 +71,8 @@ describe('Commands', () => {
 
     it('should return an instance of command interface', () => {
       const result = validateCommandFormat(`${INDEX}|ls|\n`);
-      expect(result.dependencies).toBeFalsy();
+      expect(result.dependencies).toBeTruthy();
+      expect(result.dependencies.length).toBe(0);
       expect(result.type).toBe(INDEX_NUMBER);
       expect(result.packageName).toBe('ls');
     });
