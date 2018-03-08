@@ -1,0 +1,40 @@
+{
+  "name": "@danbucholtz/tcp-node",
+  "version": "0.0.1",
+  "description": "sample project of handling tcp connections w/ node",
+  "main": "./src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danbucholtz/tcp-node.git"
+  },
+  "author": "Dan Bucholtz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danbucholtz/tcp-node/issues"
+  },
+  "homepage": "https://github.com/danbucholtz/tcp-node#readme",
+  "dependencies": {
+    "typescript": "latest"
+  },
+  "devDependencies": {
+    "@types/jest": "^22.2.0",
+    "@types/node": "^9.4.6",
+    "jest": "^22.4.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts)$": "<rootDir>/scripts/test-preprocessor.js"
+    },
+    "testRegex": "/src/.*\\.spec\\.(ts|js)$",
+    "coverageDirectory": "coverage"
+  }
+}
