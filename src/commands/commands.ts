@@ -8,7 +8,7 @@ import {
   UNKNOWN_NUMBER
 } from '../utils/constants';
 
-import { containsOnlyLetters } from '../utils/helpers';
+import { isValidUnixCommand } from '../utils/helpers';
 
 export function validateCommandFormat(rawCommand: string) {
 
@@ -17,15 +17,16 @@ export function validateCommandFormat(rawCommand: string) {
     throw new Error('Usage: Commands must end in a newline character');
   }
   
-  const commandChunks = rawCommand.split('|')
-                          .map(chunk => chunk.trim())
-                          .filter(chunk => chunk.length > 0);
-
-  if (commandChunks.length < 2 || commandChunks.length > 3) {
+  const commandChunks = rawCommand.split('|');
+  if (commandChunks.length !== 3) {
     throw new Error('Usage: command|package|dep1,dep2,dep3,...');
   }
 
-  const commandType = commandChunks[0];
+  const cleanedChunks = commandChunks.map(chunk => chunk.trim())
+                          .filter(chunk => chunk.length > 0);
+
+
+  const commandType = cleanedChunks[0];
   if (commandType !== INDEX
     && commandType !== REMOVE
     && commandType !== QUERY) {
@@ -33,18 +34,18 @@ export function validateCommandFormat(rawCommand: string) {
     throw new Error(`Usage: First argument must be ${INDEX}, ${REMOVE} or ${QUERY}`);
   }
 
-  if (!containsOnlyLetters(commandChunks[1])) {
+  if (!isValidUnixCommand(cleanedChunks[1])) {
     throw new Error('Usage: A command must consist of only letters, no spaces');
   }
 
   const commandObj: Command = {
-    type: getTypeNumber(commandChunks[0]),
-    packageName: commandChunks[1],
+    type: getTypeNumber(cleanedChunks[0]),
+    packageName: cleanedChunks[1],
     dependencies: []
   };
 
-  if (commandChunks.length > 2) {
-    const rawDependencies = commandChunks[2].split(',');
+  if (cleanedChunks.length > 2) {
+    const rawDependencies = cleanedChunks[2].split(',');
     const dependencies = rawDependencies.map(dependency => dependency.trim())
                             .filter(dependency => dependency.length);
 

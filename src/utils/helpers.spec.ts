@@ -1,5 +1,5 @@
 import {
-  containsOnlyLetters,
+  isValidUnixCommand,
   reduceBools
 } from './helpers';
 
@@ -16,42 +16,51 @@ describe('helpers', () => {
     });
   });
 
-  describe('containsOnlyLetters', () => {
-    it('should return false if a non letter is in the string', () => {
-      const resultOne = containsOnlyLetters('abc ');
+  describe('isValidUnixCommand', () => {
+    it('should return false if a non alphanumeric, underscore or hyphen is in the string', () => {
+      const resultOne = isValidUnixCommand('abc ');
       expect(resultOne).toBe(false);
 
-      const resultTwo = containsOnlyLetters('abc123');
-      expect(resultTwo).toBe(false);
-
-      const resultThree = containsOnlyLetters('abc?');
+      const resultThree = isValidUnixCommand('abc?');
       expect(resultThree).toBe(false);
 
-      const resultFour = containsOnlyLetters('');
+      const resultFour = isValidUnixCommand('');
       expect(resultFour).toBe(false);
 
-      const resultFive = containsOnlyLetters(' ');
+      const resultFive = isValidUnixCommand(' ');
       expect(resultFive).toBe(false);
 
-      const resultSix = containsOnlyLetters('(');
+      const resultSix = isValidUnixCommand('(');
       expect(resultSix).toBe(false);
 
-      const resultSeven = containsOnlyLetters('ABC ');
+      const resultSeven = isValidUnixCommand('ABC ');
       expect(resultSeven).toBe(false);
     });
 
-    it('should return true if only letters are in the string', () => {
-      const resultOne = containsOnlyLetters('abc');
+    it('should return true if string is only alphanumeric, underscore or hyphen', () => {
+      const resultOne = isValidUnixCommand('abc');
       expect(resultOne).toBe(true);
 
-      const resultTwo = containsOnlyLetters('q');
+      const resultTwo = isValidUnixCommand('q');
       expect(resultTwo).toBe(true);
 
-      const resultThree = containsOnlyLetters('ABC');
+      const resultThree = isValidUnixCommand('ABC');
       expect(resultThree).toBe(true);
 
-      const resultFour = containsOnlyLetters('Q');
+      const resultFour = isValidUnixCommand('Q');
       expect(resultFour).toBe(true);
+
+      const resultFive = isValidUnixCommand('abc123');
+      expect(resultFive).toBe(true);
+
+      const resultSix = isValidUnixCommand('abc_123');
+      expect(resultSix).toBe(true);
+
+      const resultSeven = isValidUnixCommand('abc-123');
+      expect(resultSeven).toBe(true);
+
+      const resultEight = isValidUnixCommand('abc+123');
+      expect(resultEight).toBe(true);
     });
   });
 });

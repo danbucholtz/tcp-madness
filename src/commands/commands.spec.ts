@@ -52,6 +52,13 @@ describe('Commands', () => {
       }
 
       try {
+        validateCommandFormat('taco|time\n');
+        fail();
+      } catch (ex) {
+        expect(ex.message).toEqual(expectedErrorMsg);
+      }
+
+      try {
         validateCommandFormat('taco|time|for|everyone\n');
         fail();
       } catch (ex) {
@@ -114,17 +121,7 @@ describe('Commands', () => {
     it('should throw an error when command has a space in it', () => {
       const knownErrorMsg = 'Usage: A command must consist of only letters, no spaces';
       try {
-        validateCommandFormat(`INDEX|emacs elisp\n`);
-        fail();
-      } catch (ex) {
-        expect(ex.message.includes(knownErrorMsg)).toBeTruthy();
-      }
-    });
-
-    it('should throw an error on strange formatting', () => {
-      const knownErrorMsg = 'Usage: A command must consist of only letters, no spaces';
-      try {
-        validateCommandFormat(`INDEX|emacs=elisp\n`);
+        validateCommandFormat(`INDEX|emacs elisp|\n`);
         fail();
       } catch (ex) {
         expect(ex.message.includes(knownErrorMsg)).toBeTruthy();

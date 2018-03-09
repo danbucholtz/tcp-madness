@@ -33,7 +33,6 @@ export function processCommand(command: Command): Promise<boolean> {
 }
 
 export function processIndexCommand(command: Command): Promise<boolean> {
-  console.log('Doing Index');
   // okay, first thing we need to check is if all of the dependencies are indexed
   const promises = command.dependencies.map(dependency => isIndexed(dependency));
   return Promise.all(promises).then((results: boolean[]) => {
@@ -54,22 +53,17 @@ export function processRemoveCommand(command: Command): Promise<boolean> {
   return isDependedOn(command.packageName).then((dependedOn) => {
     
     if (dependedOn) {
-      // console.log(`${command.packageName} is depended on`);
       return false;
     }
 
     // it's not depended on, so we can remove it
     
     return remove(command.packageName).then(() => {
-      //console.log(`${command.packageName} was removed`);
-      //console.log('index has the following items');
-      // getAllKeys().forEach(key => console.log('key: ', key));
       return true;
     });
   });
 }
 
 export function processQueryCommand(command: Command): Promise<boolean> {
-  console.log('DOING QUERY')
   return isIndexed(command.packageName);
 }
