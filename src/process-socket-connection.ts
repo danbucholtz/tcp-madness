@@ -1,7 +1,4 @@
-
-import {
-  validateCommandFormat
-} from './commands/commands';
+import { validateCommandFormat } from './commands/commands';
 
 import { processCommand } from './process-command';
 

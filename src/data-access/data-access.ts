@@ -2,44 +2,27 @@
 
 const commandDependenciesMap = new Map<string, string[]>();
 
-export function getAllKeys() {
-  const keys: string[] = [];
-  commandDependenciesMap.forEach((deps, key) => {
-    keys.push(key);
-  });
-  return keys;
+export async function isIndexed(packageName: string): Promise<boolean> {
+  return commandDependenciesMap.has(packageName);
 }
 
-export function isIndexed(packageName: string): Promise<boolean> {
-  return new Promise((resolve) => {
-    resolve(commandDependenciesMap.has(packageName));
-  });
-}
-
-export function isDependedOn(packageName: string): Promise<boolean> {
-  return new Promise((resolve) => {
-    commandDependenciesMap.forEach((dependencies: string[]) => {
-      for (const dependency of dependencies) {
-        if (dependency === packageName) {
-          return resolve(true);
-        }
+export async function isDependedOn(packageName: string): Promise<boolean> {
+  commandDependenciesMap.forEach((dependencies: string[]) => {
+    for (const dependency of dependencies) {
+      if (dependency === packageName) {
+        return true;
       }
-    });
-    resolve(false);
+    }
   });
+  return false;
 }
 
-export function index(packageName: string, dependencies: string[]): Promise<void> {
-  return new Promise((resolve) => {
-    commandDependenciesMap.set(packageName, dependencies);
-    resolve();
-  });
+export async function index(packageName: string, dependencies: string[]): Promise<void> {
+  commandDependenciesMap.set(packageName, dependencies);
 }
 
-export function remove(packageName: string): Promise<boolean> {
-  return new Promise((resolve) => {
-    resolve(commandDependenciesMap.delete(packageName));
-  });
+export async function remove(packageName: string): Promise<boolean> {
+  return commandDependenciesMap.delete(packageName);
 }
 
 // this method is used purely for testing

@@ -10,6 +10,11 @@ import {
 
 import { isValidUnixCommand } from '../utils/helpers';
 
+const typeStringToTypeNumberMap = new Map<string, number>();
+typeStringToTypeNumberMap.set(INDEX, INDEX_NUMBER);
+typeStringToTypeNumberMap.set(REMOVE, REMOVE_NUMBER);
+typeStringToTypeNumberMap.set(QUERY, QUERY_NUMBER);
+
 export function validateCommandFormat(rawCommand: string) {
 
   const lastChar = rawCommand.length ? rawCommand.charAt(rawCommand.length - 1) : null;
@@ -39,7 +44,7 @@ export function validateCommandFormat(rawCommand: string) {
   }
 
   const commandObj: Command = {
-    type: getTypeNumber(cleanedChunks[0]),
+    type: typeStringToTypeNumberMap.get(cleanedChunks[0]) || UNKNOWN_NUMBER,
     packageName: cleanedChunks[1],
     dependencies: []
   };
@@ -59,16 +64,6 @@ export function validateCommandFormat(rawCommand: string) {
   return commandObj;
 }
 
-function getTypeNumber(type: string) {
-  if (type === INDEX) {
-    return INDEX_NUMBER;
-  } else if (type === REMOVE) {
-    return REMOVE_NUMBER;
-  } else if (type === QUERY) {
-    return QUERY_NUMBER;
-  }
-  return UNKNOWN_NUMBER;
-}
 
 export interface Command {
   type: number;

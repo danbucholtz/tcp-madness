@@ -1,7 +1,5 @@
 
-import {
-  Command
-} from './commands/commands';
+import { Command } from './commands/commands';
 
 import {
   getAllKeys,
@@ -17,9 +15,7 @@ import {
   QUERY_NUMBER
 } from './utils/constants';
 
-import {
-  reduceBools
-} from './utils/helpers';
+import { reduceBools } from './utils/helpers';
 
 export function processCommand(command: Command): Promise<boolean> {
   if (command.type === INDEX_NUMBER) {
@@ -32,36 +28,29 @@ export function processCommand(command: Command): Promise<boolean> {
   throw new Error('Unknown Command Type');
 }
 
-export function processIndexCommand(command: Command): Promise<boolean> {
+export async function processIndexCommand(command: Command): Promise<boolean> {
   // okay, first thing we need to check is if all of the dependencies are indexed
   const promises = command.dependencies.map(dependency => isIndexed(dependency));
-  return Promise.all(promises).then((results: boolean[]) => {
-    const allSucceeded = results.length ? reduceBools(results) : true;
-    if (allSucceeded) {
-      // sweet, we can go ahead and index it since all of the dependencies are good to go
-      return index(command.packageName, command.dependencies).then(() => {
-        return true;
-      })
-    }
-    return Promise.resolve(false);
-  });
+  const results = await Promise.all(promises);
+  const allSucceeded = results.length ? reduceBools(results) : true;
+  if (allSucceeded) {
+    // sweet, we can go ahead and index it since all of the dependencies are good to go
+    await index(command.packageName, command.dependencies);
+    return true;
+  }
+  return false;
 }
 
-export function processRemoveCommand(command: Command): Promise<boolean> {
+export async function processRemoveCommand(command: Command): Promise<boolean> {
   // okay, first thing we need to do is check if this command is a dependency of another command.
   // if it is, we cannot remove it.
-  return isDependedOn(command.packageName).then((dependedOn) => {
-    
-    if (dependedOn) {
-      return false;
-    }
+  const dependedOn = await isDependedOn(command.packageName);
+  if (dependedOn) {
+    return false;
+  }
 
-    // it's not depended on, so we can remove it
-    
-    return remove(command.packageName).then(() => {
-      return true;
-    });
-  });
+  await remove(command.packageName);
+  return true;
 }
 
 export function processQueryCommand(command: Command): Promise<boolean> {

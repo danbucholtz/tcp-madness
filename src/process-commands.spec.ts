@@ -1,6 +1,4 @@
-import {
-  processCommand
-} from './process-command';
+import { processCommand } from './process-command';
 
 import { wipeDataStore } from './data-access/data-access';
 
@@ -9,7 +7,6 @@ import {
   REMOVE_NUMBER,
   REMOVE
 } from './utils/constants';
-
 
 describe('process commands', () => {
   describe('processCommand', () => {
