@@ -40,7 +40,7 @@ export function validateCommandFormat(rawCommand: string) {
   }
 
   if (!isValidUnixCommand(cleanedChunks[1])) {
-    throw new Error('Usage: A command must consist of only letters, no spaces');
+    throw new Error('Usage: Commands must be a valid unix command format');
   }
 
   const commandObj: Command = {
