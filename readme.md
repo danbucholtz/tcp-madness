@@ -7,7 +7,13 @@ This is a simple TCP server that handles message from a TCP client of a given fo
 2. `go build`
 3. `./go`
 
-The server is now up and running on `localhost:8080`
+The Go server is now up and running on `localhost:8080`
+
+## Running the Node server
+1. `cd node`
+2. `npm run start`
+
+The Node server is now up and running on `localhost:8080`
 
 ## Running the Client
 1. `cd integration`
