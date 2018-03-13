@@ -1,20 +1,20 @@
 
-import { Command } from './commands/commands';
+import { Command } from './interfaces';
 
 import {
   index,
   isIndexed,
   isDependedOn,
   remove
-} from './data-access/data-access';
+} from './data-access';
 
 import {
   INDEX_NUMBER,
   REMOVE_NUMBER,
   QUERY_NUMBER
-} from './utils/constants';
+} from './constants';
 
-import { reduceBools } from './utils/helpers';
+import { reduceBools } from './helpers';
 
 export function processCommand(command: Command): Promise<boolean> {
   if (command.type === INDEX_NUMBER) {

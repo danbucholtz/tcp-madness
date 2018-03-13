@@ -6,16 +6,17 @@ import {
   REMOVE,
   REMOVE_NUMBER,
   UNKNOWN_NUMBER
-} from '../utils/constants';
+} from './constants';
 
-import { isValidUnixCommand } from '../utils/helpers';
+import { isValidUnixCommand } from './helpers';
+import { Command } from './interfaces';
 
 const typeStringToTypeNumberMap = new Map<string, number>();
 typeStringToTypeNumberMap.set(INDEX, INDEX_NUMBER);
 typeStringToTypeNumberMap.set(REMOVE, REMOVE_NUMBER);
 typeStringToTypeNumberMap.set(QUERY, QUERY_NUMBER);
 
-export function validateCommandFormat(rawCommand: string) {
+export function validateCommand(rawCommand: string) {
 
   const lastChar = rawCommand.length ? rawCommand.charAt(rawCommand.length - 1) : null;
   if (lastChar !== '\n') {
@@ -64,9 +65,3 @@ export function validateCommandFormat(rawCommand: string) {
   return commandObj;
 }
 
-
-export interface Command {
-  type: number;
-  packageName: string;
-  dependencies: string[];
-}

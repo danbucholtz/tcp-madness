@@ -1,26 +1,26 @@
 import {
-  validateCommandFormat,
-} from './commands';
+  validateCommand,
+} from './validate-command';
 
 import {
   INDEX,
   INDEX_NUMBER,
-} from '../utils/constants';
+} from './constants';
 
-describe('Commands', () => {
+describe('Validate Command', () => {
   describe('validateCommandFormat', () => {
 
     it('should throw when the last character is not an endline', () => {
       const expectedErrorMsg = 'Usage: Commands must end in a newline character';
       try {
-        validateCommandFormat('taco|time|yo');
+        validateCommand('taco|time|yo');
         fail();
       } catch (ex) {
         expect(ex.message.includes(expectedErrorMsg)).toBeTruthy();
       }
 
       try {
-        validateCommandFormat('taco');
+        validateCommand('taco');
         fail();
       } catch (ex) {
         expect(ex.message).toEqual(expectedErrorMsg);
@@ -31,35 +31,35 @@ describe('Commands', () => {
 
       const expectedErrorMsg = 'Usage: command|package|dep1,dep2,dep3,...';
       try {
-        validateCommandFormat('\n');
+        validateCommand('\n');
         fail();
       } catch (ex) {
         expect(ex.message).toEqual(expectedErrorMsg);
       }
 
       try {
-        validateCommandFormat('taco\n');
+        validateCommand('taco\n');
         fail();
       } catch (ex) {
         expect(ex.message).toEqual(expectedErrorMsg);
       }
 
       try {
-        validateCommandFormat('taco|\n');
+        validateCommand('taco|\n');
         fail();
       } catch (ex) {
         expect(ex.message).toEqual(expectedErrorMsg);
       }
 
       try {
-        validateCommandFormat('taco|time\n');
+        validateCommand('taco|time\n');
         fail();
       } catch (ex) {
         expect(ex.message).toEqual(expectedErrorMsg);
       }
 
       try {
-        validateCommandFormat('taco|time|for|everyone\n');
+        validateCommand('taco|time|for|everyone\n');
         fail();
       } catch (ex) {
         expect(ex.message).toEqual(expectedErrorMsg);
@@ -69,7 +69,7 @@ describe('Commands', () => {
     it('should throw when the first argument is invalid', () => {
       const expectedErrorMsg = 'First argument must be';
       try {
-        validateCommandFormat('taco|time|\n');
+        validateCommand('taco|time|\n');
         fail();
       } catch (ex) {
         expect(ex.message.includes(expectedErrorMsg)).toBeTruthy();
@@ -77,7 +77,7 @@ describe('Commands', () => {
     });
 
     it('should return an instance of command interface', () => {
-      const result = validateCommandFormat(`${INDEX}|ls|\n`);
+      const result = validateCommand(`${INDEX}|ls|\n`);
       expect(result.dependencies).toBeTruthy();
       expect(result.dependencies.length).toBe(0);
       expect(result.type).toBe(INDEX_NUMBER);
@@ -85,7 +85,7 @@ describe('Commands', () => {
     });
 
     it('should return an instance of command interface with dependencies', () => {
-      const result = validateCommandFormat(`${INDEX}|ls|cd,cat,man,tsc,node,npm\n`);
+      const result = validateCommand(`${INDEX}|ls|cd,cat,man,tsc,node,npm\n`);
       expect(result.dependencies.length).toBe(6);
       expect(result.dependencies[0]).toBe('cd');
       expect(result.dependencies[1]).toBe('cat');
@@ -98,7 +98,7 @@ describe('Commands', () => {
     });
 
     it('should account for weird spacing, etc in dependencies', () => {
-      const result = validateCommandFormat(`${INDEX}|ls|cd, cat, man,tsc, node,npm\n`);
+      const result = validateCommand(`${INDEX}|ls|cd, cat, man,tsc, node,npm\n`);
       expect(result.dependencies.length).toBe(6);
       expect(result.dependencies[0]).toBe('cd');
       expect(result.dependencies[1]).toBe('cat');
@@ -111,7 +111,7 @@ describe('Commands', () => {
     it('should account for empty csv entry in the dependencies', () => {
       const knownErrorMsg = 'Usage: One or more invalid dependency entries';
       try {
-        validateCommandFormat(`${INDEX}|ls|cd,,man, tsc,,node, npm\n`);
+        validateCommand(`${INDEX}|ls|cd,,man, tsc,,node, npm\n`);
         fail();
       } catch (ex) {
         expect(ex.message.includes(knownErrorMsg)).toBeTruthy();
@@ -121,7 +121,7 @@ describe('Commands', () => {
     it('should throw an error when command has a space in it', () => {
       const knownErrorMsg = 'Usage: Commands must be a valid unix command format';
       try {
-        validateCommandFormat(`INDEX|emacs elisp|\n`);
+        validateCommand(`INDEX|emacs elisp|\n`);
         fail();
       } catch (ex) {
         expect(ex.message.includes(knownErrorMsg)).toBeTruthy();
