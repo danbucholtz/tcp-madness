@@ -43,6 +43,9 @@ func processRequest(conn net.Conn) {
 		start := makeTimestamp()
 		message, err := bufio.NewReader(conn).ReadString('\n')
 		if err != nil {
+			// if err.Error() != "EOF" {
+			// fmt.Printf("__%s__\n", err.Error())
+			// }
 			Warnf("Unexpected error when reading from request: ", err)
 			conn.Write([]byte("ERROR\n"))
 		} else if len(message) > 0 {
