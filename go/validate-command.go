@@ -13,8 +13,8 @@ type Command struct {
 }
 
 // ValidateCommand Returns a command if valid, otherwise returns an error
-func ValidateCommand(rawCommand string) (Command, error) {
-	var command Command
+func ValidateCommand(rawCommand string) (*Command, error) {
+	var command *Command
 
 	if len(rawCommand) == 0 {
 		return command, errors.New("Usage: Invalid Command, command must be a string")
@@ -54,7 +54,7 @@ func ValidateCommand(rawCommand string) (Command, error) {
 		}
 	}
 
-	command = Command{
+	command = &Command{
 		Type:         commandToNumber(commandType),
 		PackageName:  cleanedChunks[1],
 		Dependencies: dependencies,

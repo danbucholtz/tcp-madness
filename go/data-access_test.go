@@ -57,6 +57,26 @@ func TestRemovePackage(t *testing.T) {
 	IndexPackage("cat", []string{"1", "2", "3"})
 	IndexPackage("dog", []string{"1", "2", "3"})
 
+	dataStore := GetDataStore()
+	lsDependencies := dataStore["ls"]
+	catDependencies := dataStore["cat"]
+
+	if lsDependencies == nil || catDependencies == nil {
+		t.Error("ls or cat dependencies were null too early in the test")
+	}
+
 	RemovePackage("ls")
+	RemovePackage("cat")
+
+	lsDependencies = dataStore["ls"]
+	catDependencies = dataStore["cat"]
+
+	if lsDependencies != nil {
+		t.Error("ls dependencies should be null")
+	}
+
+	if catDependencies != nil {
+		t.Error("cat dependencies should be null")
+	}
 
 }
