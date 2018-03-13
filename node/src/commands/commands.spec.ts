@@ -119,7 +119,7 @@ describe('Commands', () => {
     });
 
     it('should throw an error when command has a space in it', () => {
-      const knownErrorMsg = 'Usage: A command must consist of only letters, no spaces';
+      const knownErrorMsg = 'Usage: Commands must be a valid unix command format';
       try {
         validateCommandFormat(`INDEX|emacs elisp|\n`);
         fail();

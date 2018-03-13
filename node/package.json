@@ -4,6 +4,8 @@
   "description": "sample project of handling tcp connections w/ node",
   "main": "./src/main.ts",
   "scripts": {
+    "start" : "npm run build && npm run listen",
+    "listen": "node ./dist/main.js",
     "build": "tsc",
     "test": "jest"
   },

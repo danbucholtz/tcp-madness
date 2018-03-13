@@ -7,14 +7,15 @@ export async function isIndexed(packageName: string): Promise<boolean> {
 }
 
 export async function isDependedOn(packageName: string): Promise<boolean> {
-  commandDependenciesMap.forEach((dependencies: string[]) => {
+  let found = false;
+  commandDependenciesMap.forEach((dependencies: string[], key: string) => {
     for (const dependency of dependencies) {
       if (dependency === packageName) {
-        return true;
+        found = true;
       }
     }
   });
-  return false;
+  return found;
 }
 
 export async function index(packageName: string, dependencies: string[]): Promise<void> {
