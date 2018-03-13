@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"time"
 )
 
 // Host IP Address or name
@@ -41,19 +42,28 @@ func startServer() {
 
 func processRequest(conn net.Conn) {
 	for {
-		fmt.Println("New Request received!")
+		start := makeTimestamp()
 		message, err := bufio.NewReader(conn).ReadString('\n')
 		if err != nil {
 			conn.Write([]byte("ERROR\n"))
 			// conn.Close()
-		} else {
+		} else if len(message) > 0 {
+			fmt.Printf("Request received %s\n", message)
 			response := RequestStringtoResponseString(message)
+			end := makeTimestamp()
+			millis := end - start
+			fmt.Printf("Request complete in %d millis\n", millis)
 			conn.Write([]byte(response))
 			// conn.Close()
 		}
 	}
 }
 
+func makeTimestamp() int64 {
+	return time.Now().UnixNano() / int64(time.Millisecond)
+}
+
+// RequestStringtoResponseString takes a raw string command from a TCP request and processes it, created a string to return as a response
 func RequestStringtoResponseString(requestCommand string) string {
 	command, validationError := ValidateCommand(requestCommand)
 	if validationError != nil {
@@ -68,42 +78,3 @@ func RequestStringtoResponseString(requestCommand string) string {
 	}
 	return "FAIL\n"
 }
-
-/*func processRequest(conn net.Conn) {
-	buf, err := ioutil.ReadAll(conn)
-	if err != nil {
-		fmt.Println("Error reading to buffer: ", err.Error())
-	}
-
-	untrimmed := string(buf)
-	rawCommandString := strings.Trim(untrimmed, " ")
-
-	fmt.Printf("About to process %s \n", rawCommandString)
-	command, validationError := ValidateCommand(rawCommandString)
-	if validationError != nil {
-		fmt.Println(validationError)
-		fmt.Printf("Validation error\n")
-		conn.Write([]byte("ERROR\n"))
-		conn.Close()
-		// return
-	}
-
-	fmt.Println(command)
-	result, err := processCommand(command)
-	if err != nil {
-		fmt.Printf("Error processing the command\n")
-		conn.Write([]byte("ERROR\n"))
-		conn.Close()
-		// return
-	} else if result {
-		fmt.Println("Sending back OK")
-		conn.Write([]byte("OK\n"))
-		conn.Close()
-		// return
-	} else {
-		fmt.Println("Sending back FAIL")
-		conn.Write([]byte("FAIL\n"))
-		conn.Close()
-	}
-}
-*/
