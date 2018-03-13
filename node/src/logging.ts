@@ -1,35 +1,38 @@
+const DEBUG_LEVEL = 'debug'
+const DEBUG_LEVEL_NUMBER = 1
+const WARN_LEVEL = 'warn'
+const WARN_LEVEL_NUMBER = 2
 
+let loggingNumber = WARN_LEVEL_NUMBER
 
-export function debug(content: string, ...other: any[]) {
-  if (shouldLog(0)) {
-    return logImpl(content, ...other);
+const logLevelMap = new Map<string, number>()
+logLevelMap.set(DEBUG_LEVEL, DEBUG_LEVEL_NUMBER);
+logLevelMap.set(WARN_LEVEL, WARN_LEVEL_NUMBER);
+
+export function initLogger() {
+  let levelString = process.env['LOGGING_LEVEL'];
+  console.log('Logger Environment variable String is set to: ', levelString);
+  if (levelString !== DEBUG_LEVEL) {
+    levelString = WARN_LEVEL;
+  }
+
+  loggingNumber = levelString === DEBUG_LEVEL ? DEBUG_LEVEL_NUMBER : WARN_LEVEL_NUMBER;
+
+  console.log('Logger level set to: ', levelString);
+}
+
+export function debug(input: string) {
+  if (loggingNumber <= DEBUG_LEVEL_NUMBER) {
+    return loggerImpl(input);
   }
 }
 
-export function minimal(content: string, ...other: any[]) {
-  if (shouldLog(1)) {
-    return logImpl(content, ...other);
+export function warn(input: string) {
+  if (loggingNumber <= WARN_LEVEL_NUMBER) {
+    return loggerImpl(input);
   }
 }
 
-function logImpl(content: string, ...other: any[]) {
-  // in a real app, it would make way more sense to write to a stream
-  console.log(`[${(new Date()).toString()}] ${content}: `, other);
+function loggerImpl(input: string) {
+  return console.log(input);
 }
-
-export function shouldLog(requestedLogLevel: number): boolean {
-  const applicationLogLevel = getLogLevel(process.env.LOG_LEVEL);
-  return requestedLogLevel > applicationLogLevel;
-}
-
-function getLogLevel(input: string) {
-  if (input === DEBUG) {
-    return 0;
-  } else if (input === MINIMAL) {
-    return 1;
-  }
-  return 0;
-}
-
-export const DEBUG = "DEBUG";
-export const MINIMAL = "MINIMAL";
