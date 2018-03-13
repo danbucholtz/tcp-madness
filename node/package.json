@@ -2,7 +2,7 @@
   "name": "@danbucholtz/tcp-node",
   "version": "0.0.1",
   "description": "sample project of handling tcp connections w/ node",
-  "main": "./src/index.ts",
+  "main": "./src/main.ts",
   "scripts": {
     "build": "tsc",
     "test": "jest"

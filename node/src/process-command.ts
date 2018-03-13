@@ -2,7 +2,6 @@
 import { Command } from './commands/commands';
 
 import {
-  getAllKeys,
   index,
   isIndexed,
   isDependedOn,
