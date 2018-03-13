@@ -39,28 +39,21 @@ func startServer() {
 }
 
 func processRequest(conn net.Conn) {
+	reader := bufio.NewReader(conn)
 	for {
-		start := makeTimestamp()
-		message, err := bufio.NewReader(conn).ReadString('\n')
+		start := time.Now()
+		message, err := reader.ReadString('\n')
 		if err != nil {
-			// if err.Error() != "EOF" {
-			// fmt.Printf("__%s__\n", err.Error())
-			// }
-			Warnf("Unexpected error when reading from request: ", err)
 			conn.Write([]byte("ERROR\n"))
+			return
 		} else if len(message) > 0 {
 			Debugf("Request received %s", message)
 			response := RequestStringtoResponseString(message)
-			end := makeTimestamp()
-			millis := end - start
-			Debugf("Request Completed, took %d millis", millis)
+			duration := time.Since(start)
+			Warnf("Request Completed, took %v", duration)
 			conn.Write([]byte(response))
 		}
 	}
-}
-
-func makeTimestamp() int64 {
-	return time.Now().UnixNano() / int64(time.Millisecond)
 }
 
 // RequestStringtoResponseString takes a raw string command from a TCP request and processes it, created a string to return as a response
