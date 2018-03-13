@@ -2,37 +2,35 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"net"
 	"os"
 	"time"
 )
 
-// Host IP Address or name
-const Host = "0.0.0.0"
+// HOST IP Address or name
+const HOST = "0.0.0.0"
 
-// Port to listen on
-const Port = "8080"
+// PORT to listen on
+const PORT = "8080"
 
-// Type of network packets (TCP)
-const Type = "tcp"
+// TYPE of network packets (TCP)
+const TYPE = "tcp"
 
 func startServer() {
-	listener, err := net.Listen(Type, Host+":"+Port)
+	listener, err := net.Listen(TYPE, HOST+":"+PORT)
 	if err != nil {
-		fmt.Println("Server failed to start listening: ", err.Error())
+		Warnf("Server failed to start listening: ", err.Error())
 		os.Exit(1)
 	}
 
-	// sweet, we're active and chillin'
+	// sweet, we're active and listenin'
 	defer listener.Close()
-	fmt.Println("Listening on " + Host + ":" + Port)
+	Warn("Listening on " + HOST + ":" + PORT)
 
 	for {
-		// listen for connections
 		connection, err := listener.Accept()
 		if err != nil {
-			fmt.Println("Error accepting: ", err.Error())
+			Warnf("Error Accepting Connecting", err.Error())
 			os.Exit(1)
 		}
 
@@ -45,16 +43,15 @@ func processRequest(conn net.Conn) {
 		start := makeTimestamp()
 		message, err := bufio.NewReader(conn).ReadString('\n')
 		if err != nil {
+			Warnf("Unexpected error when reading from request: ", err)
 			conn.Write([]byte("ERROR\n"))
-			// conn.Close()
 		} else if len(message) > 0 {
-			fmt.Printf("Request received %s\n", message)
+			Debugf("Request received %s", message)
 			response := RequestStringtoResponseString(message)
 			end := makeTimestamp()
 			millis := end - start
-			fmt.Printf("Request complete in %d millis\n", millis)
+			Debugf("Request Completed, took %d millis", millis)
 			conn.Write([]byte(response))
-			// conn.Close()
 		}
 	}
 }
@@ -65,16 +62,21 @@ func makeTimestamp() int64 {
 
 // RequestStringtoResponseString takes a raw string command from a TCP request and processes it, created a string to return as a response
 func RequestStringtoResponseString(requestCommand string) string {
+	// validate the request
 	command, validationError := ValidateCommand(requestCommand)
 	if validationError != nil {
+		Debugf("Invalid Request: ", validationError)
 		return "ERROR\n"
 	}
 	result, err := processCommand(command)
 	if err != nil {
+		Debugf("Error occurred when processing request: ", err)
 		return "ERROR\n"
 	}
 	if result {
+		Debug("Request was processed and operation was successful: ")
 		return "OK\n"
 	}
+	Debug("Request was processed and operation was not successful: ")
 	return "FAIL\n"
 }

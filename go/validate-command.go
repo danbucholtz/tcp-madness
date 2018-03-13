@@ -64,12 +64,12 @@ func ValidateCommand(rawCommand string) (*Command, error) {
 }
 
 func commandToNumber(command string) int {
-	if command == Index {
-		return IndexNumber
-	} else if command == Remove {
-		return RemoveNumber
-	} else if command == Query {
-		return QueryNumber
+	if command == INDEX_STRING {
+		return INDEX_NUMBER
+	} else if command == REMOVE_STRING {
+		return REMOVE_NUMBER
+	} else if command == QUERY_STRING {
+		return QUERY_NUMBER
 	}
-	return UnknownNumber
+	return UNKNOWN_NUMBER
 }

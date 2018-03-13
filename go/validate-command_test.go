@@ -76,8 +76,8 @@ func TestValidateCommand_basicCommand(t *testing.T) {
 	if len(command.Dependencies) != 0 {
 		t.Error("Expected empty array for dependencies")
 	}
-	if command.Type != IndexNumber {
-		t.Errorf("Expected %d for the type", IndexNumber)
+	if command.Type != INDEX_NUMBER {
+		t.Errorf("Expected %d for the type", INDEX_NUMBER)
 	}
 }
 
@@ -96,8 +96,8 @@ func TestValidateCommand_basicWithDeps(t *testing.T) {
 	validateDeps(t, command.Dependencies, 3, "tsc")
 	validateDeps(t, command.Dependencies, 4, "node")
 	validateDeps(t, command.Dependencies, 5, "npm")
-	if command.Type != IndexNumber {
-		t.Errorf("Expected %d for the type", IndexNumber)
+	if command.Type != INDEX_NUMBER {
+		t.Errorf("Expected %d for the type", INDEX_NUMBER)
 	}
 }
 
@@ -115,8 +115,8 @@ func TestValidateCommand_strangeDeps(t *testing.T) {
 	validateDeps(t, command.Dependencies, 3, "tsc")
 	validateDeps(t, command.Dependencies, 4, "node")
 	validateDeps(t, command.Dependencies, 5, "npm")
-	if command.Type != IndexNumber {
-		t.Errorf("Expected %d for the type", IndexNumber)
+	if command.Type != INDEX_NUMBER {
+		t.Errorf("Expected %d for the type", INDEX_NUMBER)
 	}
 }
 

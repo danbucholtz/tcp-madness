@@ -1,22 +1,22 @@
 package main
 
-// Index is a constant for the input string of "INDEX"
-const Index = "INDEX"
+// INDEX_STRING is a constant for the input string of "INDEX"
+const INDEX_STRING = "INDEX"
 
-// IndexNumber is a numeric representation for much faster comparison
-const IndexNumber = 0
+// INDEX_NUMBER is a numeric representation for much faster comparison
+const INDEX_NUMBER = 0
 
-// Remove is a constant for the input string of "REMOVE"
-const Remove = "REMOVE"
+// REMOVE_STRING is a constant for the input string of "REMOVE"
+const REMOVE_STRING = "REMOVE"
 
-// RemoveNumber is a numeric representation for much faster comparison
-const RemoveNumber = 1
+// REMOVE_NUMBER is a numeric representation for much faster comparison
+const REMOVE_NUMBER = 1
 
-// Query is a constant for the input string of "QUERY"
-const Query = "QUERY"
+// QUERY_STRING is a constant for the input string of "QUERY"
+const QUERY_STRING = "QUERY"
 
-// QueryNumber is a numeric representation for much faster comparison
-const QueryNumber = 2
+// QUERY_NUMBER is a numeric representation for much faster comparison
+const QUERY_NUMBER = 2
 
-// UnknownNumber is a numeric representation for much faster comparison
-const UnknownNumber = -1
+// UNKNOWN_NUMBER is a numeric representation for much faster comparison
+const UNKNOWN_NUMBER = -1
