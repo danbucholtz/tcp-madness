@@ -11,7 +11,8 @@ The Go server is now up and running on `localhost:8080`
 
 ## Running the Node server
 1. `cd node`
-2. `npm run start`
+2. `npm install`
+3. `npm run start`
 
 The Node server is now up and running on `localhost:8080`
 
