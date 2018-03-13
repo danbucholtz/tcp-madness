@@ -40,10 +40,18 @@ func startServer() {
 }
 
 func processRequest(conn net.Conn) {
-	message, _ := bufio.NewReader(conn).ReadString('\n')
-	fmt.Printf("Received _%s_", message)
-	conn.Write([]byte("ERROR\n"))
-	conn.Close()
+	for {
+		fmt.Println("New Request received!")
+		message, err := bufio.NewReader(conn).ReadString('\n')
+		if err != nil {
+			conn.Write([]byte("ERROR\n"))
+			// conn.Close()
+		} else {
+			response := RequestStringtoResponseString(message)
+			conn.Write([]byte(response))
+			// conn.Close()
+		}
+	}
 }
 
 func RequestStringtoResponseString(requestCommand string) string {
