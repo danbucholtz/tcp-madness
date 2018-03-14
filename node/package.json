@@ -4,7 +4,7 @@
   "description": "sample project of handling tcp connections w/ node",
   "main": "./src/main.ts",
   "scripts": {
-    "start" : "npm run build && npm run serve",
+    "start": "npm run build && npm run serve",
     "serve": "node ./dist/main.js",
     "build": "tsc",
     "test": "jest"
