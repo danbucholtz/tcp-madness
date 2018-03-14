@@ -4,7 +4,7 @@ import (
 	"errors"
 )
 
-func processCommand(command *Command) (bool, error) {
+func ProcessCommand(command *Command) (bool, error) {
 	if command.Type == INDEX_NUMBER {
 		return processIndexCommand(command)
 	} else if command.Type == REMOVE_NUMBER {
