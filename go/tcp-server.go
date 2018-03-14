@@ -64,7 +64,7 @@ func RequestStringtoResponseString(requestCommand string) string {
 		Debugf("Invalid Request: ", validationError)
 		return "ERROR\n"
 	}
-	result, err := processCommand(command)
+	result, err := ProcessCommand(command)
 	if err != nil {
 		Debugf("Error occurred when processing request: ", err)
 		return "ERROR\n"
