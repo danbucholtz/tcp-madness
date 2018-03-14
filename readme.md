@@ -47,6 +47,8 @@ Since this is not a production app and time is a factor, this project only imple
 
 To launch the fully automated integration tests for Mac, run the following commands from the project root.
 
+Note: The `go` and `node` servers must be compiled/built before running the integration test script.
+
 ```
 ./integration/integration-test-go-mac.sh // for the Go server
 ./integration/integration-test-node-mac.sh // for the Node server
