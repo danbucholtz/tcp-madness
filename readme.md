@@ -8,16 +8,19 @@ Each server launches and starts listening on port `8080` on `0.0.0.0`. The serve
 
 ## Why Two Services?
 
-Originally I implemented the server in Node.js and TypeScript, the tool I am most comfortable with. Once I had the server implemented and working correctly, I decided that I wanted to learn something new and dive into Golang. So I implemented the exact same service in Golang, as well as the same unit tests. Ultimately, it was a really good learning exercise and I'm very glad I did it.
+The goal was to compare and contrast performance of a highly concurrent network application in Go and Node.
 
 ## Building and Running the Go Server
 
 Execute the following commands to run the Go server. It's assumed `golang` is installed on the system.
 
 ```
-cd go // enter the go directory
-go build // compile the go binary
-./go // execute the go command
+# enter the go directory
+cd go
+# compile the binary
+go build
+# execute the binary
+./go
 ```
 
 The Go server is now up and running on `localhost:8080` and ready for messages.
@@ -31,10 +34,14 @@ From the `go` directory, run `go test`.
 The Node server is implemented in TypeScript, an excellent type system for JavaScript built by Microsoft. To run the node server, execute the following steps. It's assumed `node 8.x` and `npm 5.x` are installed. It's best to use the latest LTS release.
 
 ```
-cd node // enter the node directory
-npm install // install TypeScript and other build time dependencies
-npm run start // run the start script from the npm scripts (package.json)
+# enter the node directory
+cd node
+# install dependencies
+npm install
+# run the start script from package.json script section
+npm run start
 ```
+
 The `npm run start` command will compile the TypeScript, and start the server on `localhost:8080`
 
 ## Running Node Unit Tests
@@ -57,10 +64,6 @@ Note: The `go` and `node` servers must be compiled/built before running the inte
 The integration suite launches a server on `localhost:8080`, and then executes the provided test harness for the `mac-os` platform against it. It then parses the test harness output for `All tests pass` and returns a `0` or `1` status code depending on if the tests pass or fail.
 
 Since the script correctly fails with a non-zero status code, it would be appropriate to use in continuous integration environments.
-
-## Docker Rational
-
-It's been a few years since I've used Docker, so in the spirit of learning new things, I implemented Dockerfiles for both the `node` and `go` servers.
 
 ## Launching Server with Docker
 
